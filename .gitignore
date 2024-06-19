@@ -1,0 +1,52 @@
+# Ignore node_modules in both frontend and backend
+/get_notified_frontend/node_modules/
+/get_notified_api/node_modules/
+
+# Ignore build and output directories
+/get_notified_frontend/build/
+/get_notified_api/bin/
+/get_notified_api/obj/
+
+# Ignore environment variable files
+/get_notified_frontend/.env
+/get_notified_frontend/.env.local
+/get_notified_frontend/.env.development.local
+/get_notified_frontend/.env.test.local
+/get_notified_frontend/.env.production.local
+
+# Ignore TypeScript build info files
+/get_notified_frontend/*.tsbuildinfo
+
+# Ignore log files
+/get_notified_frontend/npm-debug.log*
+/get_notified_frontend/yarn-debug.log*
+/get_notified_frontend/yarn-error.log*
+/get_notified_api/*.log
+/get_notified_api/logs/
+
+# Ignore .vscode settings
+/get_notified_frontend/.vscode/
+/get_notified_api/.vscode/
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Ignore user-specific files in backend
+/get_notified_api/*.user
+/get_notified_api/*.rsuser
+/get_notified_api/*.suo
+/get_notified_api/*.userosscache
+/get_notified_api/*.sln.docstates
+
+# Ignore project.lock.json and project.fragment.lock.json in backend
+/get_notified_api/project.lock.json
+/get_notified_api/project.fragment.lock.json
+
+# Ignore temporary files
+/tmp/
+/temp/
+/*.tmp
