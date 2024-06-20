@@ -152,7 +152,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 size="small"
                     component={Link}
-                      to="/sign-in"
+                      to="/login"
                 target="_blank"
               >
                 Sign in
@@ -162,7 +162,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="contained"
                 size="small"
                    component={Link}
-                      to="/sign-up"
+                      to="/signup"
                 target="_blank"
               >
                 Sign up
@@ -216,7 +216,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="contained"
                       component={Link}
-                      to="/sign-up"
+                      to="/signup"
                       target="_blank"
                       sx={{ width: '100%' }}
                     >
@@ -228,7 +228,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="outlined"
                       component={Link}
-                      to="/sign-in"
+                      to="/login"
                       target="_blank"
                       sx={{ width: '100%' }}
                     >

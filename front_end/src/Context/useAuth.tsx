@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { UserProfile } from "../Models/User";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { loginAPI, registerAPI } from "../Services/AuthService";
 import { toast } from "react-toastify";
 import React from "react";
@@ -20,7 +20,7 @@ type Props = { children: React.ReactNode };
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserProvider = ({ children }: Props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -53,7 +53,8 @@ export const UserProvider = ({ children }: Props) => {
           setToken(res?.data.token!);
           setUser(userObj!);
           toast.success("Login Success!");
-          navigate("/search");
+          // navigate("/search");
+          window.location.href = '/';
         }
       })
       .catch((e) => toast.warning("Server error occured"));
@@ -72,7 +73,9 @@ export const UserProvider = ({ children }: Props) => {
           setToken(res?.data.token!);
           setUser(userObj!);
           toast.success("Login Success!");
-          navigate("/search");
+          // navigate("/search");
+          window.location.href = '/';
+
         }
       })
       .catch((e) => toast.warning("Server error occured"));
@@ -87,7 +90,9 @@ export const UserProvider = ({ children }: Props) => {
     localStorage.removeItem("user");
     setUser(null);
     setToken("");
-    navigate("/");
+    // navigate("/");
+    window.location.href = '/';
+
   };
 
   return (

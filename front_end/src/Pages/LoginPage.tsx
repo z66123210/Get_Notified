@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import BackToHomeButton from '../Components/BackToHomeButton';
+import { useAuth } from '../Context/useAuth';
+
 
 function Copyright(props: any) {
   return (
@@ -30,6 +33,13 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
+  const { loginUser, user, token, logout, isLoggedIn, registerUser  } = useAuth();
+  
+  if(isLoggedIn())
+    {
+      return <h1>Not Login</h1>
+    }
+ 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -104,6 +114,7 @@ export default function LoginPage() {
             </Grid>
           </Box>
         </Box>
+        <BackToHomeButton/>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
