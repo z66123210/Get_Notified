@@ -11,6 +11,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
+import { Link } from 'react-router-dom';
+
 
 const logoStyle = {
   width: '140px',
@@ -149,8 +151,8 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="primary"
                 variant="text"
                 size="small"
-                component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
+                    component={Link}
+                      to="/sign-in"
                 target="_blank"
               >
                 Sign in
@@ -159,8 +161,8 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="primary"
                 variant="contained"
                 size="small"
-                component="a"
-                href="/material-ui/getting-started/templates/sign-up/"
+                   component={Link}
+                      to="/sign-up"
                 target="_blank"
               >
                 Sign up
@@ -213,8 +215,8 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     <Button
                       color="primary"
                       variant="contained"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
+                      component={Link}
+                      to="/sign-up"
                       target="_blank"
                       sx={{ width: '100%' }}
                     >
@@ -225,8 +227,8 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     <Button
                       color="primary"
                       variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
+                      component={Link}
+                      to="/sign-in"
                       target="_blank"
                       sx={{ width: '100%' }}
                     >
