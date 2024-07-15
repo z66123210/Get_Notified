@@ -22,6 +22,7 @@ import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import Person2Icon from '@mui/icons-material/Person2';
+import LogOutButton from '../../Components/LogOutButton';
 
 function Copyright(props: any) {
   return (
@@ -126,6 +127,7 @@ export default function Dashboard() {
             >
               Dashboard
             </Typography>
+            <LogOutButton />
             <IconButton color="inherit">
                 <Person2Icon />
             </IconButton>

@@ -43,10 +43,7 @@ export default function LoginPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    loginUser(data.get('name') as string, data.get('password') as string)
   };
 
   return (
@@ -72,10 +69,10 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="name"
+              label="User Name"
+              name="name"
+              autoComplete="name"
               autoFocus
             />
             <TextField

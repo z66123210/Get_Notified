@@ -54,7 +54,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(userObj!);
           toast.success("Login Success!");
           // navigate("/search");
-          window.location.href = '/';
+          window.location.href = '/dashboard';
         }
       })
       .catch((e) => toast.warning("Server error occured"));
@@ -74,7 +74,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(userObj!);
           toast.success("Login Success!");
           // navigate("/search");
-          window.location.href = '/';
+          window.location.href = '/dashboard';
 
         }
       })
