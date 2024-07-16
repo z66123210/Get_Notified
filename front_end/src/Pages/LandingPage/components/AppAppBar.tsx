@@ -12,6 +12,9 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../Context/useAuth';
+import LogOutButton from '../../../Components/LogOutButton';
+
 
 
 const logoStyle = {
@@ -27,6 +30,8 @@ interface AppAppBarProps {
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = React.useState(false);
+  const {  user, logout, isLoggedIn  } = useAuth();
+
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -146,26 +151,37 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 alignItems: 'center',
               }}
             >
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                    component={Link}
-                      to="/login"
-                
-              >
-                Sign in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                   component={Link}
-                      to="/signup"
-              >
-                Sign up
-              </Button>
+              {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
+              
+              {isLoggedIn() ?  
+                <>
+                  <Typography color ="primary">
+                    {'Welcome '+ user?.userName}
+                  </Typography>
+                  <LogOutButton/>
+                </>
+                :  
+                <>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                        component={Link}
+                          to="/login"
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                      component={Link}
+                          to="/signup"
+                  >
+                    Sign up
+                  </Button>
+                </>
+              }
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
               <Button
