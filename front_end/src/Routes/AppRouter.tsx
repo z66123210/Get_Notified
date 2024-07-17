@@ -7,8 +7,9 @@ import NotFoundPage from '../Pages/NotFoundPage';
 import CheckOutPage from '../Pages/CheckOutPage/CheckOutPage';
 import Dashboard from '../Pages/DashBoardPage/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
-import PersonalInfo from '../Pages/DashBoardPage/PersonalInfo';
+import PersonalInfo from '../Pages/DashBoardPage/PersonalInfoPage';
 import RestrictedRoute from './RestrictedRoute';
+import SearchesPage from '../Pages/DashBoardPage/SearchesPage';
 
 const AppRouter =
     createBrowserRouter([
@@ -46,6 +47,10 @@ const AppRouter =
                   path: "personal-info",
                   element: <PersonalInfo />,
               },
+              {
+                path: "your-searches",
+                element: <SearchesPage />
+              }
           ],
       },
   ]);
