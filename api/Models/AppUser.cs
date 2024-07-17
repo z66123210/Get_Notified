@@ -8,6 +8,8 @@ namespace api.Models
 {
     public class AppUser : IdentityUser
     {
+                public List<Search>? Searches { get; set; }
+
         
     }
 }

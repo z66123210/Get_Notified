@@ -30,48 +30,7 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 import ToggleColorMode from './ToggleColorMode';
 
-interface ToggleCustomThemeProps {
-  showCustomTheme: Boolean;
-  toggleCustomTheme: () => void;
-}
 
-function ToggleCustomTheme({
-  showCustomTheme,
-  toggleCustomTheme,
-}: ToggleCustomThemeProps) {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100dvw',
-        position: 'fixed',
-        bottom: 24,
-      }}
-    >
-      <ToggleButtonGroup
-        color="primary"
-        exclusive
-        value={showCustomTheme}
-        onChange={toggleCustomTheme}
-        aria-label="Platform"
-        sx={{
-          backgroundColor: 'background.default',
-          '& .Mui-selected': {
-            pointerEvents: 'none',
-          },
-        }}
-      >
-        <ToggleButton value>
-          <AutoAwesomeRoundedIcon sx={{ fontSize: '20px', mr: 1 }} />
-          Custom theme
-        </ToggleButton>
-        <ToggleButton value={false}>Material Design 2</ToggleButton>
-      </ToggleButtonGroup>
-    </Box>
-  );
-}
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -394,10 +353,7 @@ export default function CheckOutPage() {
           </Box>
         </Grid>
       </Grid>
-      <ToggleCustomTheme
-        toggleCustomTheme={toggleCustomTheme}
-        showCustomTheme={showCustomTheme}
-      />
+  
     </ThemeProvider>
   );
 }
