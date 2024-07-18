@@ -1,10 +1,12 @@
 using api.Data;
+using api.Dtos.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using api.Models;
 
 namespace YourNamespace.Controllers
 {
@@ -82,13 +84,20 @@ namespace YourNamespace.Controllers
 
         // POST: api/Searches
         [HttpPost]
-        public async Task<ActionResult<Search>> PostSearch(Search search)
+        public async Task<ActionResult<Search>> PostSearch(SearchCreateDto searchCreateDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            search.UserId = userId;
+        
+            var search = new Search
+            {
+                SearchName = searchCreateDto.SearchName,
+                SearchUrl = searchCreateDto.SearchUrl,
+             
+                UserId = userId,
+            };
             _context.Searches.Add(search);
             await _context.SaveChangesAsync();
-
+        
             return CreatedAtAction("GetSearch", new { id = search.Id }, search);
         }
 

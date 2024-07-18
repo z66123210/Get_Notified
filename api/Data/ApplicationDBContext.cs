@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using api.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,48 +20,42 @@ namespace api.Data
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Search>(entity =>
-        {
-            entity.ToTable("searches");
+       
+                // Configure one-to-many relationship and ensure UserId is required
+            modelBuilder.Entity<Search>(entity =>
+            {   
+                entity.HasKey(e => e.Id);
 
-            entity.HasKey(e => e.Id);
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(45);
 
-            entity.Property(e => e.Id)
-                .HasColumnName("id")
-                .IsRequired();
+                entity.Property(e => e.SearchName)
+                    .HasMaxLength(45);
 
-            entity.Property(e => e.UserId)
-                .HasColumnName("userId")
-                .HasMaxLength(45)
-                .IsRequired();
+                entity.Property(e => e.SearchUrl)
+                    .HasMaxLength(45);
 
-            entity.Property(e => e.SearchName)
-                .HasColumnName("searchName")
-                .HasMaxLength(45)
-                .IsRequired(false);
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(false);
 
-            entity.Property(e => e.SearchUrl)
-                .HasColumnName("searchUrl")
-                .HasMaxLength(45)
-                .IsRequired(false);
+                entity.Property(e => e.NotificationFrequency)
+                    .HasDefaultValue(30);
 
-            entity.Property(e => e.IsActive)
-                .HasColumnName("isActive")
-                .HasDefaultValue(false);
+                entity.HasOne(s => s.User)
+                      .WithMany(u => u.Searches)
+                      .HasForeignKey(s => s.UserId);
 
-            entity.Property(e => e.NotificationFrequency)
-                .HasColumnName("notificationFrequency")
-                .HasDefaultValue(30);
+                entity.Property(s => s.UserId)
+                      .IsRequired();
+            });
 
-            entity.HasIndex(e => e.UserId)
-                .HasDatabaseName("fk_searches_user");
-
-            entity.HasOne(d => d.User)
-                .WithMany(p => p.Searches)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .HasConstraintName("fk_searches_user");
-        });
+            // Add a unique index on the Email column for AppUser
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
+        
     }
 
     }

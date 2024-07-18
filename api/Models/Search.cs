@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using api.Models;
 
-public class Search
+
+namespace api.Models
 {
-    [Key]
+    public class Search
+    {
+        [Key]
     public int Id { get; set; }
 
     [Required]
@@ -12,16 +14,19 @@ public class Search
     public string UserId { get; set; }
 
     [MaxLength(45)]
-    public string? SearchName { get; set; }
+    public string SearchName { get; set; }
 
     [MaxLength(45)]
-    public string? SearchUrl { get; set; }
+    public string SearchUrl { get; set; }
 
     public bool IsActive { get; set; } = false;
 
     public int NotificationFrequency { get; set; } = 30;
 
+    // Navigation property for the related user
     [ForeignKey("UserId")]
-    [Required]
-    public virtual AppUser User { get; set; }
+    public AppUser User { get; set; }
+
+    }
+
 }

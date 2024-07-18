@@ -112,5 +112,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.SeedRolesAsync(services);
+}
+
 app.Run();
 
