@@ -17,6 +17,10 @@ namespace api.Dtos.Account
             [Required]
             [MaxLength(45)]
             public string SearchUrl { get; set; } = null!;
+            
+            public bool IsActive { get; set; } = false;
+
+            public int NotificationFrequency { get; set; } = 30;
 
         }
 

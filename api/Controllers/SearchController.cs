@@ -90,9 +90,9 @@ namespace YourNamespace.Controllers
         
             var search = new Search
             {
-                SearchName = searchCreateDto.SearchName,
+                SearchName = searchCreateDto.SearchName ?? "Put Name Here",
                 SearchUrl = searchCreateDto.SearchUrl,
-             
+                NotificationFrequency = searchCreateDto.NotificationFrequency,
                 UserId = userId,
             };
             _context.Searches.Add(search);
