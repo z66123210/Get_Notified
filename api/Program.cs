@@ -89,6 +89,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -106,6 +108,10 @@ app.UseCors(x => x
      .AllowCredentials()
       //.WithOrigins("https://localhost:44351))
       .SetIsOriginAllowed(origin => true));
+
+
+
+      
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,14 +1,12 @@
-
-
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using api.Models;
 
-namespace api.Dtos.Account
+namespace api.Dtos
 {
         public class SearchCreateDto
         {
+            public int Id { get; set; }
 
             [Required]
             [MaxLength(45)]

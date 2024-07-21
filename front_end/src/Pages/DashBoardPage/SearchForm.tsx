@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox } from '@mui/material';
-import axios from 'axios';
+import apiClient from '../../Services/AxiosClient';
+import { useAuth } from '../../Context/useAuth';
 
 interface SearchFormProps {
     open: boolean;
@@ -23,6 +24,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ open, onClose, onSave, searchTo
     const [searchUrl, setSearchUrl] = useState('');
     const [isActive, setIsActive] = useState(false);
     const [notificationFrequency, setNotificationFrequency] = useState(30);
+    const {token} = useAuth();
 
     useEffect(() => {
         if (searchToEdit) {
@@ -48,10 +50,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ open, onClose, onSave, searchTo
 
         try {
             if (searchToEdit) {
-                await axios.put(`/api/searches/${searchToEdit.id}`, searchData);
+                await apiClient.put(`/api/searches/put/${searchToEdit.id}`, searchToEdit, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }});
                 onSave({ ...searchToEdit, ...searchData });
             } else {
-                const response = await axios.post<Search>('/api/searches', searchData);
+                const response = await apiClient.post<Search>('/api/searches', searchData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }});
                 onSave(response.data);
             }
             onClose();

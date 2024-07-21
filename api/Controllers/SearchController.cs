@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Models;
+using api.Dtos;
 
 namespace YourNamespace.Controllers
 {
@@ -47,7 +48,7 @@ namespace YourNamespace.Controllers
 
         // PUT: api/Searches/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSearch(int id, Search search)
+        public async Task<IActionResult> PutSearch(int id, SearchUpdateDto search)
         {
             if (id != search.Id)
             {

@@ -35,10 +35,10 @@ const SearchesPage: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [searchToEdit, setSearchToEdit] = useState<Search | null>(null);
     const { token } = useAuth();
-    console.log(token);
 
     useEffect(() => {
         fetchSearches();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchSearches = async () => {
@@ -56,7 +56,11 @@ const SearchesPage: React.FC = () => {
 
     const deleteSearch = async (id: number) => {
         try {
-            await axios.delete(`/api/searches/${id}`);
+            await apiClient.delete(`/api/searches/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setSearches(searches.filter(search => search.id !== id));
         } catch (error) {
             console.error('Error deleting search:', error);
