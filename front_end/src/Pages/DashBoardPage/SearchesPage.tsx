@@ -122,7 +122,7 @@ const SearchesPage: React.FC = () => {
                     ),
                 }}
             />
-            <Button variant="contained" color="primary" onClick={() => { setSearchToEdit(null); setOpen(true); }}>
+            <Button variant="contained" color="primary"  sx={{ mt: 2 }} onClick={() => { setSearchToEdit(null); setOpen(true); }}>
                 Add New Search
             </Button>
             <SearchForm open={open} onClose={() => setOpen(false)} onSave={searchToEdit ? handleEdit : handleAdd} searchToEdit={searchToEdit} />

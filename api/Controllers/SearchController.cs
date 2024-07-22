@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Models;
 using api.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace YourNamespace.Controllers
 {
@@ -46,42 +47,73 @@ namespace YourNamespace.Controllers
             return search;
         }
 
-        // PUT: api/Searches/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSearch(int id, SearchUpdateDto search)
+        [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchSearch(int id, [FromBody] JsonPatchDocument<SearchUpdateDto> patchDoc)
+    {
+        if (patchDoc == null)
         {
-            if (id != search.Id)
-            {
-                return BadRequest();
-            }
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (search.UserId != userId)
-            {
-                return Unauthorized();
-            }
-
-            _context.Entry(search).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SearchExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return BadRequest();
         }
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var search = await _context.Searches.FindAsync(id);
+
+        if (search == null)
+        {
+            return NotFound();
+        }
+
+        if (search.UserId != userId)
+        {
+            return Unauthorized();
+        }
+
+        var searchToPatch = new SearchUpdateDto
+        {
+            Id = search.Id,
+            UserId = search.UserId,
+            SearchName = search.SearchName,
+            SearchUrl = search.SearchUrl,
+            IsActive = search.IsActive,
+            NotificationFrequency = search.NotificationFrequency
+        };
+
+        patchDoc.ApplyTo(searchToPatch, ModelState);
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Manually map the updated fields back to the original entity
+        search.SearchName = searchToPatch.SearchName;
+        search.SearchUrl = searchToPatch.SearchUrl;
+        search.IsActive = searchToPatch.IsActive;
+        search.NotificationFrequency = searchToPatch.NotificationFrequency;
+
+        _context.Entry(search).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!SearchExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
+
+
 
         // POST: api/Searches
         [HttpPost]
@@ -94,6 +126,7 @@ namespace YourNamespace.Controllers
                 SearchName = searchCreateDto.SearchName ?? "Put Name Here",
                 SearchUrl = searchCreateDto.SearchUrl,
                 NotificationFrequency = searchCreateDto.NotificationFrequency,
+                IsActive = searchCreateDto.IsActive,
                 UserId = userId,
             };
             _context.Searches.Add(search);
@@ -124,5 +157,6 @@ namespace YourNamespace.Controllers
         {
             return _context.Searches.Any(e => e.Id == id);
         }
+        
     }
 }

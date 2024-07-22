@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox } from '@mui/material';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, Typography, Box } from '@mui/material';
 import apiClient from '../../Services/AxiosClient';
 import { useAuth } from '../../Context/useAuth';
 
@@ -50,9 +50,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ open, onClose, onSave, searchTo
 
         try {
             if (searchToEdit) {
-                await apiClient.put(`/api/searches/put/${searchToEdit.id}`, searchToEdit, {
+                const patchData = [
+                    { op: 'replace', path: '/searchName', value: searchToEdit.searchName },
+                    { op: 'replace', path: '/searchUrl', value: searchToEdit.searchUrl },
+                    { op: 'replace', path: '/isActive', value: searchToEdit.isActive },
+                    { op: 'replace', path: '/notificationFrequency', value: searchToEdit.notificationFrequency }
+                ];
+                await apiClient.patch(`/api/searches/${searchToEdit.id}`, patchData, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json-patch+json',
                     }});
                 onSave({ ...searchToEdit, ...searchData });
             } else {
@@ -97,10 +104,19 @@ const SearchForm: React.FC<SearchFormProps> = ({ open, onClose, onSave, searchTo
                     value={notificationFrequency}
                     onChange={(e) => setNotificationFrequency(parseInt(e.target.value, 10))}
                 />
-                <Checkbox  
-                    checked={isActive}
-                    onChange={(e) => setIsActive(e.target.checked)}
-                />
+                   <Box display="flex" alignItems="center">
+            <Checkbox
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+                name="isActive"
+            />
+            <Typography>
+                Is Active
+            </Typography>
+        </Box>
+                
+                
+
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">Cancel</Button>
