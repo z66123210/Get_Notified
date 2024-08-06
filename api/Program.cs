@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,18 +87,23 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, api.Service.TokenService>();
 
 
 
 
 var app = builder.Build();
 
+
+ StripeConfiguration.ApiKey = "sk_test_51PfIaVRsnoHgmWyZE05LkTYEl1CE39X5VERNqKgBJComECjTjXfkdNIMQSHF7sIIMjDk9W6j3AFAbDK8wm8eti5e00qdglXF4E";
+    
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
