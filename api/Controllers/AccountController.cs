@@ -8,6 +8,7 @@ using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 
 namespace api.Controllers
@@ -40,6 +41,16 @@ namespace api.Controllers
 
             if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
 
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.None, // Required for cross-site cookies
+                Expires = DateTime.UtcNow.AddDays(1) // Set the cookie to expire in 1 day
+            };
+            HttpContext.Response.Cookies.Append("customer", user.Stripe_Customer_ID, cookieOptions);
+
+
             return Ok(
                 new NewUserDto
                 {
@@ -58,16 +69,39 @@ namespace api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
+
+                var options = new CustomerCreateOptions
+                {
+                    Email = registerDto.Email,
+                };
+                var service = new CustomerService();
+                var customer = await service.CreateAsync(options);
+
+                // Set the cookie to simulate an authenticated user.
+                // In practice, this customer.Id is stored along side your
+                // user and retrieved along with the logged in user.
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false,
+                    SameSite = SameSiteMode.None, // Required for cross-site cookies
+                    Expires = DateTime.UtcNow.AddDays(1) // Set the cookie to expire in 1 day
+                };
+                HttpContext.Response.Cookies.Append("customer", customer.Id, cookieOptions);
+
+
                 var appUser = new AppUser
                 {
                     UserName = registerDto.Username,
-                    Email = registerDto.Email
+                    Email = registerDto.Email,
+                    Stripe_Customer_ID = customer.Id
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
 
                 if (createdUser.Succeeded)
                 {
+
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if (roleResult.Succeeded)
                     {

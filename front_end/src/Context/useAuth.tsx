@@ -36,6 +36,10 @@ export const UserProvider = ({ children }: Props) => {
     setIsReady(true);
   }, []);
 
+  const deleteCookie = (name:string) => {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+};
+
   const registerUser = async (
     email: string,
     username: string,
@@ -88,6 +92,8 @@ export const UserProvider = ({ children }: Props) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    deleteCookie('customer');
+
     setUser(null);
     setToken("");
     // navigate("/");
@@ -105,3 +111,4 @@ export const UserProvider = ({ children }: Props) => {
 };
 
 export const useAuth = () => React.useContext(UserContext);
+

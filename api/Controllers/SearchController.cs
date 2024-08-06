@@ -10,7 +10,7 @@ using api.Models;
 using api.Dtos;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace YourNamespace.Controllers
+namespace api.Controllers
 {
     [Authorize]
     [Route("api/searches")]

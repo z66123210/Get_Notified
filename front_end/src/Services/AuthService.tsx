@@ -7,6 +7,7 @@ const api = "http://localhost:5167/api/";
 export const loginAPI = async (username: string, password: string) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "account/login", {
+      withCredentials: true,
       username: username,
       password: password,
     });
@@ -23,6 +24,7 @@ export const registerAPI = async (
 ) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "account/register", {
+      withCredentials: true,
       email: email,
       username: username,
       password: password,

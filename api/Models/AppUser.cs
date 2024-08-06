@@ -14,6 +14,8 @@ namespace api.Models
         [EmailAddress]
         [MaxLength(256)]
         public override string Email { get; set; }
+        public string Stripe_Customer_ID { get; set; } 
+
 
         // Navigation property for related searches
         public ICollection<Search> Searches { get; set; }

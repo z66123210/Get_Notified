@@ -5,6 +5,7 @@ using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -51,7 +52,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-   options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -87,7 +88,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+
+        });
+});
+
 builder.Services.AddScoped<ITokenService, api.Service.TokenService>();
+builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("Stripe"));
 
 
 
@@ -95,8 +110,8 @@ builder.Services.AddScoped<ITokenService, api.Service.TokenService>();
 var app = builder.Build();
 
 
- StripeConfiguration.ApiKey = "sk_test_51PfIaVRsnoHgmWyZE05LkTYEl1CE39X5VERNqKgBJComECjTjXfkdNIMQSHF7sIIMjDk9W6j3AFAbDK8wm8eti5e00qdglXF4E";
-    
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -105,25 +120,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
+var stripeSettings = builder.Configuration.GetSection("Stripe").Get<StripeOptions>();
+StripeConfiguration.ApiKey = stripeSettings.SecretKey;
 
 app.UseHttpsRedirection();
 
-app.UseCors(x => x
-     .AllowAnyMethod()
-     .AllowAnyHeader()
-     .AllowCredentials()
-      //.WithOrigins("https://localhost:44351))
-      .SetIsOriginAllowed(origin => true));
-
-
-
-      
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
+app.UseCors("AllowSpecificOrigin");
 // Seed data
 using (var scope = app.Services.CreateScope())
 {
