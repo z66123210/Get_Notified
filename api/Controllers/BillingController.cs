@@ -11,7 +11,7 @@ using Stripe;
 
 namespace dotnet.Controllers
 {
-    [Route("api/subscription")]
+    [Route("api/billing")]
     [ApiController]
     public class BillingController : ControllerBase
     {

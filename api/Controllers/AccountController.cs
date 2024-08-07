@@ -44,7 +44,7 @@ namespace api.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.None, // Required for cross-site cookies
                 Expires = DateTime.UtcNow.AddDays(1) // Set the cookie to expire in 1 day
             };
@@ -83,7 +83,7 @@ namespace api.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = false,
+                    Secure = true,
                     SameSite = SameSiteMode.None, // Required for cross-site cookies
                     Expires = DateTime.UtcNow.AddDays(1) // Set the cookie to expire in 1 day
                 };
