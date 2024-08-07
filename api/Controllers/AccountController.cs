@@ -129,5 +129,18 @@ namespace api.Controllers
                 return StatusCode(500, e);
             }
         }
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            CookieOptions options = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // Ensure this is set if you're using HTTPS
+                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set expiration to a past date
+                SameSite = SameSiteMode.None
+            };
+            Response.Cookies.Append("customer", "", options);
+            return Ok(new { message = "Logged out" });
+        }
     }
 }

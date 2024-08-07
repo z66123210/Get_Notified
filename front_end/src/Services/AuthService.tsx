@@ -1,15 +1,16 @@
 import axios from "axios";
 import { handleError } from "../Helpers/ErrorHandler";
 import { UserProfileToken } from "../Models/User";
+import apiClient from "./AxiosClient";
 
-const api = "http://localhost:5167/api/";
+// const api = "http://localhost:5167/api/";
 
 export const loginAPI = async (username: string, password: string) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/login", {
+    const data = await apiClient.post<UserProfileToken>("api/account/login", {
       username: username,
       password: password,
-    },{withCredentials: true});
+    });
     return data;
   } catch (error) {
     handleError(error);
@@ -22,14 +23,32 @@ export const registerAPI = async (
   password: string
 ) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/register", {
+    const data = await apiClient.post<UserProfileToken>("api/account/register", {
 
       email: email,
       username: username,
       password: password,
-    },{withCredentials: true});
+    });
     return data;
   } catch (error) {
     handleError(error);
+  }
+};
+
+export const LogoutAPI = async () => {
+  try {
+    const response = await apiClient.get('api/account/logout');
+
+    if (response.status === 200) {
+      // Successfully logged out
+      console.log('Logged out');
+      // Redirect to login page or perform any other necessary actions
+      window.location.href = '/login';
+    } else {
+      // Handle error
+      console.error('Logout failed');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
 };
