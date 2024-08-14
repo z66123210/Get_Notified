@@ -10,6 +10,10 @@ import ProtectedRoute from './ProtectedRoute';
 import PersonalInfo from '../Pages/DashBoardPage/PersonalInfoPage';
 import RestrictedRoute from './RestrictedRoute';
 import SearchesPage from '../Pages/DashBoardPage/SearchesPage';
+import Prices from '../Pages/PaymentPage/Prices';
+import Subscribe from '../Pages/PaymentPage/Subscribe';
+import Account from '../Pages/PaymentPage/Account';
+import Cancel from '../Pages/PaymentPage/Cancel';
 
 const AppRouter =
     createBrowserRouter([
@@ -33,7 +37,8 @@ const AppRouter =
       },
       {
           path: "/checkout",
-          element: <CheckOutPage />,
+        //   element: <CheckOutPage />,
+        element: <Prices />
       },
       {
           path: "/dashboard",
@@ -52,6 +57,22 @@ const AppRouter =
                 element: <SearchesPage />
               }
           ],
+      },
+      {
+        path: "/prices",
+        element: <Prices />,
+      },
+      {
+        path: "/subscribe",
+        element: <Subscribe />,
+      },
+      {
+        path: "/account",
+        element: <Account />,
+      },
+      {
+        path: "/cancel",
+        element: <Cancel />,
       },
   ]);
 

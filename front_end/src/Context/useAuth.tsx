@@ -5,6 +5,12 @@ import { loginAPI, LogoutAPI, registerAPI } from "../Services/AuthService";
 import { toast } from "react-toastify";
 import React from "react";
 import axios from "axios";
+import { apiGetPublishableKey } from "../Services/AxiosClient";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe('pk_test_51PfIaVRsnoHgmWyZ2OGnGN9NPsvTErJ9E5I7FFz6Vt3XI5YopB4fhcAnvXt8BQoxYcWuzlQHoz4wxCxFeGqfgG5l00jXgu05Ss');
+
 
 type UserContextType = {
   user: UserProfile | null;
@@ -102,7 +108,9 @@ export const UserProvider = ({ children }: Props) => {
     <UserContext.Provider
       value={{ loginUser, user, token, logout, isLoggedIn, registerUser }}
     >
-      {isReady ? children : null}
+        <Elements stripe={stripePromise} >
+        {isReady ? children : null}
+        </Elements>
     </UserContext.Provider>
   );
 };
