@@ -14,6 +14,7 @@ import Prices from '../Pages/PaymentPage/Prices';
 import Subscribe from '../Pages/PaymentPage/Subscribe';
 import Account from '../Pages/PaymentPage/Account';
 import Cancel from '../Pages/PaymentPage/Cancel';
+import SubscriptionPage from '../Pages/StripePaymentPage/SubscriptionPage';
 
 const AppRouter =
     createBrowserRouter([
@@ -64,7 +65,7 @@ const AppRouter =
       },
       {
         path: "/subscribe",
-        element: <Subscribe />,
+        element: <SubscriptionPage />,
       },
       {
         path: "/account",

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../Services/AxiosClient';
 
+
 const Prices = () => {
   const location = useLocation();
   const navigate = useNavigate();
