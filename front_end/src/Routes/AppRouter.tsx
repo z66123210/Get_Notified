@@ -16,6 +16,7 @@ import Account from '../Pages/PaymentPage/Account';
 import Cancel from '../Pages/PaymentPage/Cancel';
 import SubscriptionPage from '../Pages/StripePaymentPage/SubscriptionPage';
 import PaymentComplete from '../Pages/StripePaymentPage/PaymentComplete';
+import PremiumPage from '../Pages/PremiumPage';
 
 const AppRouter =
     createBrowserRouter([
@@ -39,8 +40,7 @@ const AppRouter =
       },
       {
           path: "/checkout",
-        //   element: <CheckOutPage />,
-        element: <Prices />
+          element: <PremiumPage />,
       },
       {
           path: "/dashboard",
@@ -61,10 +61,6 @@ const AppRouter =
           ],
       },
       {
-        path: "/prices",
-        element: <Prices />,
-      },
-      {
         path: "/subscribe",
         element: <SubscriptionPage />,
       },
@@ -81,6 +77,7 @@ const AppRouter =
         element: <PaymentComplete />,
       },
   ]);
+
 
 
 export default AppRouter;

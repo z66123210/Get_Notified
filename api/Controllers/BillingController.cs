@@ -199,6 +199,34 @@ namespace dotnet.Controllers
               Subscriptions = subscriptions,
             };
         }
+        [HttpGet("subscription")]
+        public async Task<IActionResult> GetSubscription()
+        {
+            var customerId = HttpContext.Request.Cookies["customer"];
+                        var service = new SubscriptionService();
+
+
+            // List the customer's active subscription
+            var subscriptions = await service.ListAsync(new SubscriptionListOptions
+            {
+                Customer = customerId,
+                Limit = 1
+            });
+
+            // Check if there are any active subscriptions
+            if (subscriptions.Data.Count == 0)
+            {
+                return NotFound(new { error = "No active subscription found." });
+            }
+
+            var subscription = subscriptions.Data.First();
+
+            return Ok(new
+            {
+                status = subscription.Status,
+                current_period_end = subscription.CurrentPeriodEnd
+            });
+        }
 
 
         [HttpPost("webhook")]
