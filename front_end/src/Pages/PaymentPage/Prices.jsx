@@ -30,27 +30,6 @@ const Prices = () => {
     fetchPrices();
   }, []);
 
-  // const createSubscription = async (priceId) => {
-  //   const {subscriptionId, clientSecret} = await fetch('api/billing/create-subscription', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       priceId
-  //     }),
-  //   }).then(r => r.json());
-
-  //   navigate('/subscribe', {
-  //     state: {
-  //       from: location,
-  //       subscriptionId,
-  //       clientSecret,
-  //     },
-  //     replace: false
-  //   });
-  // }
-
   const createSubscription = async (priceId) => {
     try {
       const response = await apiClient.post('/api/billing/create-subscription', {

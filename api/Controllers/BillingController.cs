@@ -86,6 +86,22 @@ namespace dotnet.Controllers
             };
             subscriptionOptions.AddExpand("latest_invoice.payment_intent");
             var subscriptionService = new SubscriptionService();
+
+              // List the customer's active subscriptions
+    var options = new SubscriptionListOptions
+    {
+        Customer = customerId,
+        Status = "active",
+        Limit = 1
+    };
+    var subscriptions = subscriptionService.List(options);
+
+    // Check if the customer already has an active subscription
+    if (subscriptions.Data.Count > 0)
+    {
+        return BadRequest(new { error = "The customer already has an active subscription. Please cancel the existing subscription before creating a new one." });
+    }
+
             try
             {
                 Subscription subscription = subscriptionService.Create(subscriptionOptions);
