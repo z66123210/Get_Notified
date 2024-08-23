@@ -221,11 +221,12 @@ namespace dotnet.Controllers
 
             var subscription = subscriptions.Data.First();
 
-            return Ok(new
-            {
-                status = subscription.Status,
-                current_period_end = subscription.CurrentPeriodEnd
-            });
+            // return Ok(new
+            // {
+            //     status = subscription.Status,
+            //     current_period_end = subscription.CurrentPeriodEnd
+            // });
+              return Ok(subscription);
         }
 
 

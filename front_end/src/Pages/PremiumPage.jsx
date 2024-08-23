@@ -8,8 +8,10 @@ import apiClient from '../Services/AxiosClient';
 
 const isUserSubscribed = async () => {
   try {
-    const response = await apiClient.get('/api/subscription/status');
-    return response.data.isActive;
+    const response = await apiClient.get('/api/billing/subscription');
+    console.log(response);
+
+    return response.data.status;
   } catch (error) {
     console.error('Failed to fetch subscription status:', error);
     return false;
@@ -23,6 +25,7 @@ export default function PremiumPage() {
   useEffect(() => {
     const checkSubscription = async () => {
       const subscribed = await isUserSubscribed();
+
       setIsSubscribed(subscribed);
     };
 

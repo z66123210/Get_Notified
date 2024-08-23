@@ -29,7 +29,7 @@ const MemberStatusPage = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      await apiClient.post('/api/billing/cancel-subscription', {}, {
+      await apiClient.post('/api/billing/cancel-subscription', {subscriptionId:subscription.id}, {
         headers: {
           'Content-Type': 'application/json'
         }
