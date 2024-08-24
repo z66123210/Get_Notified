@@ -86,6 +86,22 @@ namespace dotnet.Controllers
             };
             subscriptionOptions.AddExpand("latest_invoice.payment_intent");
             var subscriptionService = new SubscriptionService();
+
+              // List the customer's active subscriptions
+    var options = new SubscriptionListOptions
+    {
+        Customer = customerId,
+        Status = "active",
+        Limit = 1
+    };
+    var subscriptions = subscriptionService.List(options);
+
+    // Check if the customer already has an active subscription
+    if (subscriptions.Data.Count > 0)
+    {
+        return BadRequest(new { error = "The customer already has an active subscription. Please cancel the existing subscription before creating a new one." });
+    }
+
             try
             {
                 Subscription subscription = subscriptionService.Create(subscriptionOptions);
@@ -182,6 +198,35 @@ namespace dotnet.Controllers
             return new SubscriptionsResponse{
               Subscriptions = subscriptions,
             };
+        }
+        [HttpGet("subscription")]
+        public async Task<IActionResult> GetSubscription()
+        {
+            var customerId = HttpContext.Request.Cookies["customer"];
+                        var service = new SubscriptionService();
+
+
+            // List the customer's active subscription
+            var subscriptions = await service.ListAsync(new SubscriptionListOptions
+            {
+                Customer = customerId,
+                Limit = 1
+            });
+
+            // Check if there are any active subscriptions
+            if (subscriptions.Data.Count == 0)
+            {
+                return NotFound(new { error = "No active subscription found." });
+            }
+
+            var subscription = subscriptions.Data.First();
+
+            // return Ok(new
+            // {
+            //     status = subscription.Status,
+            //     current_period_end = subscription.CurrentPeriodEnd
+            // });
+              return Ok(subscription);
         }
 
 

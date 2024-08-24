@@ -22,7 +22,7 @@ const SubscriptionForm = ({ clientSecret }) => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/account',
+        return_url: 'http://localhost:3000/complete',
       },
     });
 

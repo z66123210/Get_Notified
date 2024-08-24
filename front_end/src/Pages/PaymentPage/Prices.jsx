@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../Services/AxiosClient';
-
+import DashBoardButton from '../../Components/DashBoardButton';
 
 const Prices = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [prices, setPrices] = useState([]);
+  const [error, setError] = useState(null); // State to handle error messages
 
-  // useEffect(() => {
-  //   const fetchPrices = async () => {
-  //     const {prices} = await fetch('api/subscription/config').then(r => r.json());
-  //     setPrices(prices);
-  //   };
-  //   fetchPrices();
-  // }, [])
   useEffect(() => {
     const fetchPrices = async () => {
       try {
@@ -23,33 +17,15 @@ const Prices = () => {
         });
         setPrices(response.data.prices);
       } catch (error) {
-        console.error('Error fetching prices:', error);
+        // Set error message from server or a generic message
+        setError(
+          error.response?.data?.error || 'An error occurred while fetching prices.'
+        );
       }
     };
 
     fetchPrices();
   }, []);
-
-  // const createSubscription = async (priceId) => {
-  //   const {subscriptionId, clientSecret} = await fetch('api/billing/create-subscription', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       priceId
-  //     }),
-  //   }).then(r => r.json());
-
-  //   navigate('/subscribe', {
-  //     state: {
-  //       from: location,
-  //       subscriptionId,
-  //       clientSecret,
-  //     },
-  //     replace: false
-  //   });
-  // }
 
   const createSubscription = async (priceId) => {
     try {
@@ -72,32 +48,40 @@ const Prices = () => {
         replace: false
       });
     } catch (error) {
-      console.error('Error creating subscription:', error);
+      // Set error message from server or a generic message
+      setError(
+        error.response?.data?.error || 'An error occurred while creating the subscription.'
+      );
     }
   };
   
-
   return (
     <div>
       <h1>Select a plan</h1>
 
+      {/* Display error message if one exists */}
+      {error && <div className="error-message" style={{ color: 'red' }}>{error}</div>}
+
       <div className="price-list">
-        {prices.map((price) => {
+        {prices.map((price,index) => {
           return (
             <div key={price.id}>
               <h3>{price.product.name}</h3>
 
               <p>
-                ${price.unit_amount / 100} / month
+              ${price.unit_amount / 100} / {index === 0 ? 'month' : 'year'}
               </p>
 
               <button onClick={() => createSubscription(price.id)}>
                 Select
               </button>
+              
             </div>
           )
         })}
       </div>
+      < DashBoardButton/>
+
     </div>
   );
 }
