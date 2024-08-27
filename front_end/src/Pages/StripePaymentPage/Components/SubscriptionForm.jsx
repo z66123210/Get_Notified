@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Button } from '@mui/material';
 
 import apiClient from '../../../Services/AxiosClient';
 
@@ -35,32 +36,18 @@ const SubscriptionForm = ({ clientSecret }) => {
     setIsProcessing(false);
   };
 
+
   return (
-
     <>
-    <h1>Subscribe</h1>
-
-      <p>
-        Try the successful test card: <span>4242424242424242</span>.
-      </p>
-
-      <p>
-        Try the test card that requires SCA: <span>4000002500003155</span>.
-      </p>
-
-      <p>
-        Use any <i>future</i> expiry date, CVC,5 digit postal code
-      </p>
-
-      <hr />
-
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      <button type="submit" disabled={!stripe || isProcessing}>
-        {isProcessing ? 'Processing...' : 'Subscribe'}
-      </button>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-    </form>
+      <form onSubmit={handleSubmit}>
+        <PaymentElement />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <Button type="submit" disabled={!stripe || isProcessing} variant="contained" color="primary">
+            {isProcessing ? 'Processing...' : 'Subscribe'}
+          </Button>
+        </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+      </form>
     </>
   );
 };

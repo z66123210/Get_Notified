@@ -11,7 +11,6 @@ import PersonalInfo from '../Pages/DashBoardPage/PersonalInfoPage';
 import RestrictedRoute from './RestrictedRoute';
 import SearchesPage from '../Pages/DashBoardPage/SearchesPage';
 import Prices from '../Pages/PaymentPage/Prices';
-import Subscribe from '../Pages/PaymentPage/Subscribe';
 import Account from '../Pages/PaymentPage/Account';
 import Cancel from '../Pages/PaymentPage/Cancel';
 import SubscriptionPage from '../Pages/StripePaymentPage/SubscriptionPage';

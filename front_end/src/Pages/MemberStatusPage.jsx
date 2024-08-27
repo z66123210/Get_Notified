@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../Services/AxiosClient';
 import { useNavigate } from 'react-router-dom';
+import { Container, Typography, Button, Box, Paper, CircularProgress, Alert } from '@mui/material';
 
 const MemberStatusPage = () => {
   const [subscription, setSubscription] = useState(null);
@@ -12,7 +13,7 @@ const MemberStatusPage = () => {
     const fetchSubscription = async () => {
       try {
         const response = await apiClient.get('/api/billing/subscription', {
-          withCredentials: true
+          withCredentials: true,
         });
         setSubscription(response.data);
       } catch (error) {
@@ -29,10 +30,10 @@ const MemberStatusPage = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      await apiClient.post('/api/billing/cancel-subscription', {subscriptionId:subscription.id}, {
+      await apiClient.post('/api/billing/cancel-subscription', { subscriptionId: subscription.id }, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
       alert('Subscription canceled successfully.');
       navigate('/dashboard');
@@ -44,24 +45,49 @@ const MemberStatusPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div className="error-message" style={{ color: 'red' }}>{error}</div>;
+    return (
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Container>
+    );
   }
 
   return (
-    <div>
-      <h1>Subscription Status</h1>
-      {subscription && (
-        <div>
-          <p>Status: {subscription.status}</p>
-          <p>Next Billing Date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}</p>
-          <button onClick={handleCancelSubscription}>Cancel Subscription</button>
-        </div>
-      )}
-    </div>
+    <Container maxWidth="sm" sx={{ mt: 5 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Subscription Status
+        </Typography>
+
+        {subscription && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="body1">
+              <strong>Status:</strong> {subscription.status}
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              <strong>Next Billing Date:</strong> {new Date(subscription.current_period_end * 1000).toLocaleDateString()}
+            </Typography>
+            <Button
+              variant="contained"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 4 }}
+              onClick={handleCancelSubscription}
+            >
+              Cancel Subscription
+            </Button>
+          </Box>
+        )}
+      </Paper>
+    </Container>
   );
 };
 

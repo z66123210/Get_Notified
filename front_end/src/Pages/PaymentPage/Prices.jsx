@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../Services/AxiosClient';
 import DashBoardButton from '../../Components/DashBoardButton';
+import { Box, Container, Typography, Grid, Card, CardContent, CardActions, Button, Alert } from '@mui/material';
 
 const Prices = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [prices, setPrices] = useState([]);
-  const [error, setError] = useState(null); // State to handle error messages
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -17,7 +18,6 @@ const Prices = () => {
         });
         setPrices(response.data.prices);
       } catch (error) {
-        // Set error message from server or a generic message
         setError(
           error.response?.data?.error || 'An error occurred while fetching prices.'
         );
@@ -48,42 +48,57 @@ const Prices = () => {
         replace: false
       });
     } catch (error) {
-      // Set error message from server or a generic message
       setError(
         error.response?.data?.error || 'An error occurred while creating the subscription.'
       );
     }
   };
-  
+
   return (
-    <div>
-      <h1>Select a plan</h1>
+    <Container>
+      <Typography variant="h4" align="center" gutterBottom>
+        Select a Plan
+      </Typography>
 
       {/* Display error message if one exists */}
-      {error && <div className="error-message" style={{ color: 'red' }}>{error}</div>}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
-      <div className="price-list">
-        {prices.map((price,index) => {
-          return (
-            <div key={price.id}>
-              <h3>{price.product.name}</h3>
+      <Grid container spacing={4} justifyContent="space-between" sx={{ mt: 4 }}>
+        {prices.map((price, index) => (
+          <Grid item xs={12} sm={6} key={price.id}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {price.product.name}
+                </Typography>
+                <Typography variant="h5" color="textSecondary">
+                  ${price.unit_amount / 100} / {index === 0 ? 'month' : 'year'}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  fullWidth 
+                  onClick={() => createSubscription(price.id)}
+                >
+                  Select
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-              <p>
-              ${price.unit_amount / 100} / {index === 0 ? 'month' : 'year'}
-              </p>
-
-              <button onClick={() => createSubscription(price.id)}>
-                Select
-              </button>
-              
-            </div>
-          )
-        })}
-      </div>
-      < DashBoardButton/>
-
-    </div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+  <DashBoardButton />
+</Box>
+    </Container>
   );
-}
+};
 
 export default Prices;
